@@ -1,16 +1,17 @@
 package softuni.model.service;
 
-import softuni.model.entity.Category;
+import softuni.model.entity.CategoryName;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class ProductServiceModel {
+    private String id;
     private String name;
     private String description;
     private BigDecimal price;
     private LocalDateTime neededBefore;
-    private CategoryServiceModel category;
+    private CategoryName category;
 
     public ProductServiceModel() {
     }
@@ -51,11 +52,20 @@ public class ProductServiceModel {
         return this;
     }
 
-    public CategoryServiceModel getCategory() {
+    public String getId() {
+        return id;
+    }
+
+    public ProductServiceModel setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public CategoryName getCategory() {
         return category;
     }
 
-    public ProductServiceModel setCategory(CategoryServiceModel category) {
+    public ProductServiceModel setCategory(CategoryName category) {
         this.category = category;
         return this;
     }

@@ -1,8 +1,10 @@
 package softuni.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
+import softuni.model.entity.CategoryName;
 import softuni.service.ProductService;
 
 import javax.servlet.http.HttpSession;
@@ -17,14 +19,17 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public ModelAndView index(HttpSession httpSession, ModelAndView modelAndView) {
+    public String index(HttpSession httpSession, Model model) {
 
         if (httpSession.getAttribute("user") == null) {
-            modelAndView.setViewName("index");
+            return "index";
         } else {
-            modelAndView.addObject("products", this.productService.findAllItems());
-            modelAndView.setViewName("home");
+            model.addAttribute("totalSum", productService.getTotalSum());
+            model.addAttribute("drinks", productService.findAllProductsByCategory(CategoryName.DRINK));
+            model.addAttribute("food", productService.findAllProductsByCategory(CategoryName.FOOD));
+            model.addAttribute("household", productService.findAllProductsByCategory(CategoryName.HOUSEHOLD));
+            model.addAttribute("other", productService.findAllProductsByCategory(CategoryName.OTHER));
+            return "home";
         }
-        return modelAndView;
     }
 }

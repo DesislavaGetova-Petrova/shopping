@@ -44,7 +44,7 @@ public class ProductsController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.productAddBindingModel",bindingResult);
             return "redirect:add";
         }
-        this.productService.addItem(this.modelMapper.map(productAddBindingModel, ProductServiceModel.class));
+        this.productService.add(this.modelMapper.map(productAddBindingModel, ProductServiceModel.class));
         return  "redirect:/";
     }
 }
