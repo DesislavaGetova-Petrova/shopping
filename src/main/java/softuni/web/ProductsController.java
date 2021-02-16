@@ -4,15 +4,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import softuni.model.binding.ProductAddBindingModel;
 import softuni.model.service.ProductServiceModel;
 import softuni.service.ProductService;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -29,7 +27,10 @@ public class ProductsController {
         }
 
         @GetMapping("/add")
-        public String add(Model model) {
+        public String add(Model model, HttpSession httpSession) {
+            if (httpSession.getAttribute("user") == null) {
+                return "redirect:/";
+            }
             if(!model.containsAttribute("productAddBindingModel")){
                 model.addAttribute("productAddBindingModel",new ProductAddBindingModel());            }
             return "product-add";
@@ -45,6 +46,17 @@ public class ProductsController {
             return "redirect:add";
         }
         this.productService.add(this.modelMapper.map(productAddBindingModel, ProductServiceModel.class));
+        return  "redirect:/";
+    }
+    @GetMapping("/buy/{id}")
+    public String buyById(@PathVariable String id){
+         productService.buyById(id);
+        return  "redirect:/";
+    }
+
+    @GetMapping("/buy/all")
+    public String buyAll(){
+            productService.buyAll();
         return  "redirect:/";
     }
 }
